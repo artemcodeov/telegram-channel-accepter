@@ -7,7 +7,16 @@ import schemas
 from models import User, Channel
 from settings import DATABASE_URL
 
-engine = create_async_engine(DATABASE_URL)
+database_url = DATABASE_URL
+if DATABASE_URL.startswith("sqlite"):
+    first_part, second_part = DATABASE_URL.split(":")
+    first_part += "+aiosqlite"
+    database_url = first_part + second_part
+elif DATABASE_URL.startswith("postgres"):
+    first_part, second_part = DATABASE_URL.split(":")
+    first_part += "+asyncpg"
+    database_url = first_part + second_part
+engine = create_async_engine(database_url)
 session = async_sessionmaker(engine, expire_on_commit=False)
 
 
