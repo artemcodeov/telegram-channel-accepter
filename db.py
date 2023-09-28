@@ -15,7 +15,7 @@ if DATABASE_URL.startswith("sqlite"):
 elif DATABASE_URL.startswith("postgres"):
     first_part, second_part = DATABASE_URL.split(":")
     first_part += "+asyncpg"
-    database_url = first_part + second_part
+    database_url = first_part.replace("postgres", "postgresql") + second_part
 engine = create_async_engine(database_url)
 session = async_sessionmaker(engine, expire_on_commit=False)
 
