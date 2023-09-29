@@ -13,6 +13,7 @@ from settings import DATABASE_URL
 config = context.config
 section = config.config_ini_section
 config.set_section_option(section, "DATABASE_URL", DATABASE_URL.replace("postgres", "postgresql"))
+print(DATABASE_URL.replace("postgres", "postgresql"))
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
