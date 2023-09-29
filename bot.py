@@ -12,13 +12,14 @@ dp.include_router(admin)
 @dp.message(CommandStart())
 async def start(message: types.Message):
     user = await get_user(message)
-    if user.banned_bot:
-        async with session() as s:
-            user.banned_bot = False
-            s.add(user)
-            await s.commit()
     if not user:
         await create_user(message.from_user)
+    else:
+        if user.banned_bot:
+            async with session() as s:
+                user.banned_bot = False
+                s.add(user)
+                await s.commit()
     # await message.answer(f"Salom, {message.from_user.full_name}")
 
 
