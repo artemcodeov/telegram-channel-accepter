@@ -128,7 +128,7 @@ async def remove_channel(query: types.CallbackQuery, callback_data: AdminChannel
     await bot.send_message(query.from_user.id, "Are you sure?", reply_markup=builder.as_markup())
 
 
-@channels.callback_query(RemoveState.are_you_sure, RemoveChannelCallback)
+@channels.callback_query(RemoveState.are_you_sure)
 async def process_remove_channel(query: types.CallbackQuery, callback_data: RemoveChannelCallback, state: FSMContext):
     data = await state.get_data()
     if callback_data.answer is True:
