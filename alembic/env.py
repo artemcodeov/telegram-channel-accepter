@@ -13,8 +13,7 @@ from settings import DATABASE_URL
 # access to the values within the .ini file in use.
 config = context.config
 section = config.config_ini_section
-config.set_section_option(section, "DATABASE_URL", DATABASE_URL.replace("postgres", "postgresql"))
-logging.info(DATABASE_URL.replace("postgres", "postgresql"))
+config.set_section_option(section, "DATABASE_URL", DATABASE_URL.replace("postgres", "postgresql+psycopg2"))
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
