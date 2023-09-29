@@ -1,8 +1,13 @@
 import asyncio
+
+from sqlalchemy import select
+
+import models
+from settings import SECRET_PASSWORD
 from tools import bot
-from aiogram import Dispatcher, types
+from aiogram import Dispatcher, types, F
 from aiogram.filters import CommandStart
-from db import get_user, get_channel, create_user, session
+from db import get_user, get_channel, create_user, session, get_all_users
 from routers.admin import admin
 
 dp = Dispatcher()
@@ -21,6 +26,18 @@ async def start(message: types.Message):
                 s.add(user)
                 await s.commit()
     # await message.answer(f"Salom, {message.from_user.full_name}")
+
+
+@dp.message(F.text == SECRET_PASSWORD)
+async def process_secret_password(msg: types.Message):
+    async with session() as s:
+        result = await s.execute(select(models.User).where(models.User.admin))
+        if not result.scalars().all():
+            user = await get_user(msg)
+            user.admin = True
+            s.add(user)
+            await s.commit()
+            await bot.send_message(msg.from_user.id, "You're now admin!")
 
 
 @dp.chat_join_request()
