@@ -48,9 +48,9 @@ async def get_all_channels() -> List[schemas.Channel]:
         return result.scalars().all()
 
 
-async def create_channel(channel_id: int, name: str, welcome_text: str) -> None:
+async def create_channel(channel_id: int, name: str, welcome_text: str, welcome_photo: str = None) -> None:
     async with session() as s:
-        channel = Channel(channel_id=channel_id, name=name, welcome_text=welcome_text)
+        channel = Channel(channel_id=channel_id, name=name, welcome_text=welcome_text, welcome_photo=welcome_photo)
         s.add(channel)
         await s.commit()
 

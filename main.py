@@ -1,10 +1,13 @@
 from aiogram import types, Dispatcher
 from fastapi import FastAPI
+from starlette.staticfiles import StaticFiles
 
 from bot import bot, dp
 from settings import WEBHOOK_PATH, WEBHOOK_URL
 
 app = FastAPI()
+
+app.mount("/media", StaticFiles(directory="media"), name="media")
 
 
 @app.on_event("startup")

@@ -1,4 +1,5 @@
 from aiogram import Router, types, F
+from aiogram.enums import ContentType
 from aiogram.exceptions import TelegramForbiddenError
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
@@ -37,7 +38,7 @@ async def admin_command(msg: types.Message):
                       AdminCallback.filter(F.action == "menu"))
 async def spam(query: types.CallbackQuery, state: FSMContext):
     await state.set_state(SpamState.spam_text)
-    await bot.send_message(query.from_user.id, "Type message to spam")
+    await bot.send_message(query.from_user.id, "Type message to spam or send photo")
 
 
 @admin.message(SpamState.spam_text)
@@ -46,7 +47,10 @@ async def process_spam(msg: types.Message, state: FSMContext):
     text = entities_convert(msg)
     for user in await get_all_users():
         try:
-            await bot.send_message(user.user_id, text)
+            if msg.content_type == ContentType.PHOTO:
+                await bot.send_photo(user.user_id, msg.photo[-1].file_id, caption=text)
+            elif msg.content_type == ContentType.TEXT:
+                await bot.send_message(user.user_id, text)
         except TelegramForbiddenError:
             async with session() as s:
                 user.banned_bot = True

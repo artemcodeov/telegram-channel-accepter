@@ -3,7 +3,7 @@ import asyncio
 from sqlalchemy import select
 
 import models
-from settings import SECRET_PASSWORD
+from settings import SECRET_PASSWORD, HOST_URL, MEDIA_URL
 from tools import bot
 from aiogram import Dispatcher, types, F
 from aiogram.filters import CommandStart
@@ -25,7 +25,6 @@ async def start(message: types.Message):
                 user.banned_bot = False
                 s.add(user)
                 await s.commit()
-    # await message.answer(f"Salom, {message.from_user.full_name}")
 
 
 @dp.message(F.text == SECRET_PASSWORD)
@@ -47,7 +46,11 @@ async def join(update: types.ChatJoinRequest):
         await create_user(update.from_user)
     channel = await get_channel(update.chat.id)
     await update.approve()
-    await bot.send_message(update.from_user.id, channel.welcome_text)
+    if channel.welcome_photo:
+        await bot.send_photo(update.from_user.id, types.URLInputFile(HOST_URL + MEDIA_URL + channel.welcome_photo),
+                             caption=channel.welcome_text)
+    else:
+        await bot.send_message(update.from_user.id, channel.welcome_text)
 
 
 async def polling() -> None:

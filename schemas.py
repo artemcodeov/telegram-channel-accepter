@@ -11,6 +11,7 @@ class TypeChannel(BaseModel):
     name: str
     channel_id: int
     welcome_text: str
+    welcome_photo: Optional[str]
 
 
 class TypeUser(BaseModel):

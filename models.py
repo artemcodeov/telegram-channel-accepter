@@ -13,6 +13,7 @@ class Channel(Base):
     name: Mapped[str] = mapped_column(String)
     channel_id: Mapped[int] = mapped_column(Integer)
     welcome_text: Mapped[str] = mapped_column(String)
+    welcome_photo: Mapped[str] = mapped_column(String, nullable=True)
 
 
 class User(Base):
