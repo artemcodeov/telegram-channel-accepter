@@ -56,7 +56,7 @@ async def admin_create_channel(query: types.CallbackQuery, state: FSMContext):
 @channels.message(Channel.id)
 async def process_channel_id(msg: types.Message, state: FSMContext):
     if msg.forward_from:
-        await state.update_data(id=msg.forward_from.id)
+        await state.update_data(id=msg.forward_from_chat.id)
     else:
         await state.update_data(id=msg.text)
     await state.set_state(Channel.name)
