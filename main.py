@@ -1,9 +1,11 @@
+import os.path
+
 from aiogram import types, Dispatcher
 from fastapi import FastAPI
 from starlette.staticfiles import StaticFiles
 
 from bot import bot, dp
-from settings import WEBHOOK_PATH, WEBHOOK_URL
+from settings import WEBHOOK_PATH, WEBHOOK_URL, MEDIA_ROOT
 
 app = FastAPI()
 

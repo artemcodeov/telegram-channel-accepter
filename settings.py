@@ -16,3 +16,6 @@ SECRET_PASSWORD = os.getenv("SECRET_PASSWORD")
 BASE_DIR = Path(__file__).resolve().parent
 MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_URL = "/media/"
+
+if not os.path.exists(MEDIA_ROOT):
+    os.mkdir(MEDIA_ROOT)
