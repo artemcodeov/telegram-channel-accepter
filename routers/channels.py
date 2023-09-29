@@ -135,6 +135,6 @@ async def process_remove_channel(query: types.CallbackQuery, callback_data: Remo
         channel = await get_channel(data['id'])
         async with session() as s:
             await s.delete(channel)
-            # await s.commit()
+            await s.commit()
     await bot.send_message(query.from_user.id, "OK")
     await state.clear()
