@@ -9,13 +9,9 @@ from settings import DATABASE_URL
 
 database_url = DATABASE_URL
 if DATABASE_URL.startswith("sqlite"):
-    first_part, second_part = DATABASE_URL.split(":")
-    first_part += "+aiosqlite"
-    database_url = first_part + second_part
+    database_url = DATABASE_URL.replace("sqlite://", "sqlite+aiosqlite://")
 elif DATABASE_URL.startswith("postgres"):
-    first_part, second_part = DATABASE_URL.split(":")
-    first_part += "+asyncpg"
-    database_url = first_part.replace("postgres", "postgresql") + second_part
+    database_url = DATABASE_URL.replace("postgres://", "postgresql+asyncpg://")
 engine = create_async_engine(database_url)
 session = async_sessionmaker(engine, expire_on_commit=False)
 
