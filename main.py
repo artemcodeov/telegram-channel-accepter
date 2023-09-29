@@ -23,5 +23,5 @@ async def on_shutdown():
 
 @app.post(WEBHOOK_PATH)
 async def webhook_handler(update: dict):
-    telegram_update = types.Update(**update)
-    await dp.update(telegram_update)
+    telegram_update = types.Update.model_validate(update, context={"bot": bot})
+    await dp.feed_update(bot, telegram_update)
